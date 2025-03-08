@@ -1,0 +1,3 @@
+<h1>Dashboard</h1>
+    <p *ngIf="loginService.isAuthenticated$ | async">Welcome to your dashboard!</p>
+    <p *ngIf="!(loginService.isAuthenticated$ | async)">Please log in to view this page.</p>

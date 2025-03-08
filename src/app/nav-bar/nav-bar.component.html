@@ -1,0 +1,14 @@
+<nav>
+    <ul>
+      <li *ngIf="loginService.isAuthenticated$ | async">
+        <a routerLink="/dashboard">Dashboard</a>
+      </li>
+      <li *ngIf="!(loginService.isAuthenticated$ | async)">
+        <a routerLink="/login">Login</a>
+      </li>
+      <li *ngIf="loginService.isAuthenticated$ | async">
+        <a routerLink="/logout">Logout</a>
+      </li>
+    </ul>
+  </nav>
+  
