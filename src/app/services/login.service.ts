@@ -6,6 +6,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class LoginService {
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+  isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
   private userClaimsSubject = new BehaviorSubject<any>(null);
 
 
@@ -24,7 +25,18 @@ export class LoginService {
     return this.isAuthenticatedSubject.value;
   }
 
-  public get userClaims(): any {
+  public getuserClaims(): any {
     return this.userClaimsSubject.value;
+  }
+
+  public setAccessToken(token: string | undefined): void {
+    if(token) {
+    localStorage.setItem('access_token', token);
+    }
+  }
+
+  //get token
+  public getAccessToken(): string | null {
+    return localStorage.getItem('access_token');
   }
 }

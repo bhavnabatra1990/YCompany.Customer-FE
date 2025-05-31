@@ -27,6 +27,8 @@ export class CallbackComponent implements OnInit {
             // Fetch and store user claims
             const userInfo = await this.oktaAuth.getUser();
             this.loginService.setuserClaims(userInfo);
+            var token = await this.oktaAuth.getAccessToken();
+            this.loginService.setAccessToken(token);
           } else {
             this.loginService.setuserClaims(null);
           }

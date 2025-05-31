@@ -1,21 +1,13 @@
-/* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f9f9f9;
-  }
-  
-  .dashboard-container {
+.dashboard-container {
     padding: 20px;
     max-width: 800px;
     margin: auto;
+    font-family: Arial, sans-serif;
   }
   
   h1 {
     font-size: 2rem;
     color: #0056b3;
-    margin-bottom: 10px;
   }
   
   p {
@@ -23,49 +15,51 @@ body {
     color: #555;
   }
   
-  /* Tabs Styles */
+  /* Tabs Styling */
   .tabs {
-    position: relative;
+    margin-top: 20px;
   }
   
-  .tabs input[type="radio"] {
-    display: none;
+  .tab-list {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+    border-bottom: 2px solid #ddd;
   }
   
-  .tabs label {
-    display: inline-block;
+  .tab-list li {
     padding: 10px 20px;
     cursor: pointer;
     font-weight: bold;
     color: #0056b3;
     border-bottom: 2px solid transparent;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: color 0.3s ease, border-color 0.3s ease;
   }
   
-  .tabs label:hover {
-    background-color: #f0f4f8;
-  }
-  
-  .tabs input[type="radio"]:checked + label {
+  .tab-list li:hover {
     color: #003f7d;
-    border-bottom: 3px solid #0056b3;
   }
   
+  .tab-list li.active {
+    color: #003f7d;
+    border-bottom: 2px solid #0056b3;
+  }
+  
+  /* Content Styling */
   .tab-content {
-    display: none;
-    background-color: #ffffff;
-    border: 1px solid #ddd;
     padding: 20px;
-    border-radius: 5px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-top: none;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-top: 10px;
+    margin-top: -1px;
   }
   
-  .tabs input[type="radio"]:checked ~ .tab-content {
-    display: block;
+  .tab-content h2 {
+    color: #0056b3;
   }
   
-  /* Content Styles */
   ul {
     list-style-type: none;
     padding: 0;
