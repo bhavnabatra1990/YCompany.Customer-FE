@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
-import { OktaAuthStateService } from '@okta/okta-angular';
-import OktaAuth from '@okta/okta-auth-js';
+import { Component, inject } from '@angular/core';
+import { OKTA_AUTH } from '@okta/okta-angular';
 
 @Component({
   selector: 'app-logout',
@@ -9,7 +8,9 @@ import OktaAuth from '@okta/okta-auth-js';
   styleUrl: './logout.component.css'
 })
 export class LogoutComponent {
-  constructor(private oktaAuth: OktaAuth) {
+    private oktaAuth = inject(OKTA_AUTH);
+    
+  constructor() {
     this.logout();
   }
 

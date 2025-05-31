@@ -1,3 +1,46 @@
-<h1>Dashboard</h1>
-    <p *ngIf="loginService.isAuthenticated$ | async">Welcome to your dashboard!</p>
-    <p *ngIf="!(loginService.isAuthenticated$ | async)">Please log in to view this page.</p>
+<div class="dashboard-container">
+    <h1>Dashboard</h1>
+    <p *ngIf="loginService.isAuthenticated">Welcome to your dashboard!</p>
+    <p *ngIf="!(loginService.isAuthenticated)">Please log in to view this page.</p>
+
+    <div *ngIf="loginService.isAuthenticated">
+      <div class="tabs">
+        <!-- Tab Selection -->
+        <input type="radio" id="policies-tab" name="tab-group" checked>
+        <label for="policies-tab" class="tab">My Policies</label>
+
+        <input type="radio" id="profile-tab" name="tab-group">
+        <label for="profile-tab" class="tab">My Profile</label>
+
+        <!-- Tab Content -->
+        <div class="tab-content" id="policies">
+          <h2>Policy Details</h2>
+          <ul>
+            <li>
+              <strong>Policy Name:</strong> Car Insurance <br>
+              <strong>Policy Number:</strong> 123456789 <br>
+              <strong>Expiry Date:</strong> 2025-12-31
+            </li>
+            <li>
+              <strong>Policy Name:</strong> Health Insurance <br>
+              <strong>Policy Number:</strong> 987654321 <br>
+              <strong>Expiry Date:</strong> 2026-03-15
+            </li>
+            <li>
+              <strong>Policy Name:</strong> Home Insurance <br>
+              <strong>Policy Number:</strong> 456123789 <br>
+              <strong>Expiry Date:</strong> 2026-08-10
+            </li>
+          </ul>
+        </div>
+
+        <div class="tab-content" id="profile">
+          <h2>Profile Details</h2>
+          <p><strong>Name:</strong> John Doe</p>
+          <p><strong>Email:</strong> john.doe.com</p>
+          <p><strong>Phone:</strong> +1234567890</p>
+          <p><strong>Address:</strong> 123 Main Street, Springfield</p>
+        </div>
+      </div>
+    </div>
+  </div>

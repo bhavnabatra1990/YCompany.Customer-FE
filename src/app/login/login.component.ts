@@ -10,7 +10,7 @@ import { async, filter, map } from 'rxjs';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  constructor(private oktaAuth: OktaAuth) {}
+  private oktaAuth = inject(OKTA_AUTH);
 
   // Function to initiate login
   async login() {
