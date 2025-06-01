@@ -1,5 +1,8 @@
 <nav>
     <ul>
+      <li *ngIf="!loginService.isAuthenticated">
+        <a routerLink="/login">Login</a>
+      </li>
       <li *ngIf="loginService.isAuthenticated">
         <a routerLink="/dashboard">Dashboard</a>
       </li>
@@ -8,6 +11,9 @@
       </li> -->
       <li *ngIf="loginService.isAuthenticated">
         <a routerLink="/logout">Logout</a>
+      </li>
+      <li *ngIf="loginService.isAuthenticated">
+       <span>Welcome, {{ loginService.userName }}!</span>
       </li>
     </ul>
   </nav>

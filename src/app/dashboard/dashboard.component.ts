@@ -1,8 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef } from '@angular/core';
+
 import { LoginService } from '../services/login.service';
 import { UserService } from '../services/user.service';
-import { ChangeDetectorRef } from '@angular/core';
-import { UserProfile } from '../models/user-profile.model';
+import { PolicyService } from '../services/policy.service';
+import { Policy } from '../models/policies.model';
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,60 +14,97 @@ import { UserProfile } from '../models/user-profile.model';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent implements OnInit, OnDestroy{
-  authSubscription: any;
-  constructor(public loginService: LoginService,
-     public userService: UserService,
-     private cdr: ChangeDetectorRef) {}
-  activeTab: string = 'policies'; // Initialize activeTab with a default value
-  policies: { name: string }[] = []; // Example structure for policies
-  userProfile: any = null; // Example structure for user profile
+export class DashboardComponent implements OnInit, OnDestroy {
+  private authSubscription!: Subscription;
+
+  activeTab: string = 'policies';
+  policies: Policy[] = [];
+  userProfile: any = null;
   isAuthenticated = false;
+  isLoading: boolean = false;
+  error:string | null = null;
+
+  constructor(
+    public loginService: LoginService,
+    public userService: UserService,
+    public policyService: PolicyService,
+    private cdr: ChangeDetectorRef,
+    private router:Router
+  ) { }
 
   ngOnInit(): void {
-    // Subscribe to authentication state changes
     this.authSubscription = this.loginService.isAuthenticated$.subscribe(isAuth => {
       this.isAuthenticated = isAuth;
       if (isAuth) {
         this.fetchUserProfile();
-        // Replace static policies with API call if needed
-        this.policies = [
-          { name: 'Policy 1' },
-          { name: 'Policy 2' },
-          { name: 'Policy 3' }
-        ];
       } else {
-        this.userProfile = undefined; // Clear profile data on logout
+        this.userProfile = undefined;
+        this.policies = [];
       }
     });
   }
 
   fetchUserProfile(): void {
-    var claims = this.loginService.getuserClaims();
+    this.isLoading = true;
+    const claims = this.loginService.getuserClaims();
     //get email from claims
     if (!claims || !claims.preferred_username) {
-      console.error('No email found in user claims');
+      this.isLoading = false;
+      alert('No email found in user claims');
       return;
     }
-    const email = claims.preferred_username;  // Replace with actual logged-in user ID or token logic
-    this.userService.getProfile(email).subscribe({
-      next: responseData=> {
-        if(responseData && responseData.response && responseData.success) {
-        this.userProfile = responseData.response as UserProfile;
-        this.cdr.detectChanges(); // 🔥 Manually trigger UI update
-      }},
-      error: err => {
-        console.error('Failed to load profile:', err);
+    const email = claims.preferred_username;
+    const name = claims.name;
+    this.userService.fetchUserProfile(email).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.userProfile = response.response;
+          this.loginService.setUserId(this.userProfile.id,name); // Set user ID in login service
+          this.fetchPolicies(); // Fetch policies after setting user ID
+          this.isLoading = false;
+          this.cdr.detectChanges(); // Move here so it happens after setting policies
+        } else {
+          this.error = response.statusMessage;
+        }
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.error = 'Error fetching policies';
+        console.error('Error fetching policies:', error);
       }
     });
   }
 
+  fetchPolicies(): void {
+    this.isLoading = true;
+    const userId = this.loginService.geUserId();
+    if (userId) {
+      this.policyService.getAllPolicies(userId).subscribe({
+        next: (response) => {
+          if (response.success) {
+            this.policies = response.response;
+            this.isLoading = false;
+            this.cdr.detectChanges(); // Move here so it happens after setting policies
+          } else {
+            this.error = response.statusMessage;
+          }
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.error = 'An error occurred while fetching policies';
+        }
+      });
+    }
+  }
+
+  viewPolicyDetails(params: any) {
+    const policyId = params.id;
+    this.router.navigate(['/policy', policyId]);
+  }
+
   ngOnDestroy(): void {
-    // Unsubscribe to avoid memory leaks
     if (this.authSubscription) {
       this.authSubscription.unsubscribe();
     }
   }
-
-
 }

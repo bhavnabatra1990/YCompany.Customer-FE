@@ -73,4 +73,49 @@
   ul li:last-child {
     border-bottom: none;
   }
+  /* dashboard.component.css */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+  }
+  
+  .spinner {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .policy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+    padding: 16px;
+  }
+  
+  .policy-card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: box-shadow 0.2s ease-in-out;
+  }
+  
+  .policy-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  
+  .policy-card p {
+    margin: 8px 0;
+    font-size: 14px;
+  }
+  
   

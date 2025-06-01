@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { UserProfile } from '../models/user-profile.model';
 import { ApiResponse } from '../models/api-response.model';
 
@@ -9,13 +9,13 @@ import { ApiResponse } from '../models/api-response.model';
 })
 export class UserService {
 
-  //{{baseUrl}}/api/User/profile?email=batrabhavna27@gmail.com
-  private apiUrl = 'https://localhost:7059/api/user';  // Replace with your actual API URL
+  private apiUrl = 'https://localhost:7059/api/user';
   private userProfileUrl = '/profile';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  getProfile(email: string): Observable<ApiResponse<UserProfile>> {
+
+  fetchUserProfile(email: string): Observable<ApiResponse<UserProfile>> {
     return this.http.get<ApiResponse<UserProfile>>(`${this.apiUrl}${this.userProfileUrl}?email=${email}`);
   }
 
@@ -24,5 +24,5 @@ export class UserService {
   //   const headers = new HttpHeaders({'Content-Type': 'application/json'});
   //   return this.http.post(`${this.apiUrl}/signup`, signUpData, { headers });
   // }
-  
+
 }

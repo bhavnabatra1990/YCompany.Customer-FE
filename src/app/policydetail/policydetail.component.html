@@ -1,0 +1,18 @@
+<div class="policy-detail-container" *ngIf="!isLoading && policyDetail && loginService.isAuthenticated">
+    <h2>Policy Details</h2>
+    <div class="policy-info-grid">
+      <div><strong>Policy Holder:</strong> {{ policyDetail.policyHolder }}</div>
+      <div><strong>Policy Name:</strong> {{ policyDetail.policyName }}</div>
+      <div><strong>Policy Number:</strong> {{ policyDetail.policyNumber }}</div>
+      <div><strong>Start Date:</strong> {{ policyDetail.policyStartDate }}</div>
+      <div><strong>End Date:</strong> {{ policyDetail.policyEndDate }}</div>
+      <div><strong>Sum Assured:</strong> ₹{{ policyDetail.sumAssured }}</div>
+      <div><strong>Premium Paid:</strong> ₹{{ policyDetail.premiumPaid }}</div>
+      <div><strong>Billing Cycle:</strong> {{ policyDetail.billingCycle }}</div>
+      <a routerLink="/address">Policy Address</a>       
+    </div>
+  </div>
+  
+  <div *ngIf="isLoading" class="loading">Loading policy details...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+  
