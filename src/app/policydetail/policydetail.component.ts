@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { PolicyService } from '../services/policy.service';
 import { LoginService } from '../services/login.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-policydetail',
@@ -15,7 +15,8 @@ export class PolicydetailComponent implements OnChanges, OnInit {
   error: string | null = null;
   policyId: number | undefined;
 
-  constructor(private route: ActivatedRoute,private policyService: PolicyService, public loginService: LoginService) {}
+  constructor(private route: ActivatedRoute,private policyService: PolicyService, public loginService: LoginService,
+    private router:Router) {}
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -54,4 +55,9 @@ export class PolicydetailComponent implements OnChanges, OnInit {
     });
   }
 }
+
+navigateToAddress(id: number) {
+  this.router.navigate(['/address', id, this.policyId]);
+}
+
 }

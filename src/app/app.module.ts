@@ -19,6 +19,9 @@ import { PolicyService } from './services/policy.service';
 import { DataService } from './services/data.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './auth.interceptor';
+import { AddressComponent } from './address/address.component';
+import { FormsModule } from '@angular/forms';
+import { PolicydetailComponent } from './policydetail/policydetail.component';
 
 const oktaAuth = new OktaAuth({
   issuer: 'https://dev-17889767.okta.com/oauth2/default', // Replace with your Okta domain
@@ -36,15 +39,18 @@ const oktaAuth = new OktaAuth({
     NavBarComponent,
     DashboardComponent,
     LogoutComponent,
+    AddressComponent,
+    PolicydetailComponent
   ],
   imports: [
     BrowserModule,
+    CommonModule,
+    FormsModule,
     AppRoutingModule,
     OktaAuthModule,
     AsyncPipe,
     RouterOutlet,
     RouterLink,
-    CommonModule,
     HttpClientModule  
   ],
   providers: [

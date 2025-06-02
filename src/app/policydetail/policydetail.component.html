@@ -9,7 +9,7 @@
       <div><strong>Sum Assured:</strong> ₹{{ policyDetail.sumAssured }}</div>
       <div><strong>Premium Paid:</strong> ₹{{ policyDetail.premiumPaid }}</div>
       <div><strong>Billing Cycle:</strong> {{ policyDetail.billingCycle }}</div>
-      <a routerLink="/address">Policy Address</a>       
+      <button (click)="navigateToAddress(policyDetail.addressId)">Go to Policy Address</button>    
     </div>
   </div>
   

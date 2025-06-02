@@ -18,7 +18,7 @@ export class PolicyService {
     return this.http.get<ApiResponse<Policy[]>>(`${this.apiUrl}${this.policyUrl}?userId=${userId}`);
   }
 
-  getPolicyDetail(policyId: number, userId: number): Observable<ApiResponse<Policy>> {
-    return this.http.get<ApiResponse<Policy>>(`${this.apiUrl}/?userId=${userId}&policyId=${policyId}`);
+  getPolicyDetail(id: number, userId: number): Observable<ApiResponse<Policy>> {
+    return this.http.get<ApiResponse<Policy>>(`${this.apiUrl}/${id}?userId=${userId}`);
   }
 }
