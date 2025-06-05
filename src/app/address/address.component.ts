@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoginService } from '../services/login.service';
 import { PolicyService } from '../services/policy.service';
@@ -29,14 +29,25 @@ export class AddressComponent implements OnChanges, OnInit {
   states: any[] = [];
   cities: any[] = [];
   policyId: number | undefined;
+  isChange: boolean = false;
+  originalAddress: Address = {
+    countryId: undefined,
+    stateId: undefined,
+    cityId: undefined,
+    streetAddress: '',
+    landMark: '',
+    postalCode: '',
+    id: 0
+  };
 
   constructor(private route: ActivatedRoute,private addressService: AddressService, 
-    private dataService: DataService, public loginService: LoginService, private router: Router) {}
+    private dataService: DataService, public loginService: LoginService, private router: Router, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
     const policyParam = this.route.snapshot.paramMap.get('policyId');
-
+    this.isChange = false;
+    this.cdr.detectChanges();
     if (idParam) {
     this.addressId = parseInt(idParam,10);
     }
@@ -61,6 +72,7 @@ export class AddressComponent implements OnChanges, OnInit {
     this.address.cityId = undefined;
     this.states = [];
     this.cities = [];
+    this.detectChanges();
 
     if (this.address.countryId) {
       this.dataService.getStateFromCountry(this.address.countryId).subscribe((data) => {
@@ -72,6 +84,7 @@ export class AddressComponent implements OnChanges, OnInit {
   onStateChange() {
     this.address.cityId = undefined;
     this.cities = [];
+    this.detectChanges();
 
     if (this.address.stateId) {
       this.dataService.getCityFromState(this.address.stateId).subscribe((data) => {
@@ -86,12 +99,19 @@ export class AddressComponent implements OnChanges, OnInit {
     }
   }
 
+  detectChanges() {
+    this.isChange = JSON.stringify(this.address) !== JSON.stringify(this.originalAddress);
+    this.cdr.detectChanges(); // Force Angular to update the view
+  }
+
   fetchAddressDetail(): void {
     if(this.addressId) {
     this.addressService.getAddressDetail(this.addressId).subscribe({
       next: (response) => {
         if (response.success) {
-          this.address = response.response;
+          this.originalAddress = response.response;
+          this.address = { ...this.originalAddress };
+          this.isChange = false;
           this.loadStatesAndCities();
         } else {
           this.error = response.statusMessage;
@@ -122,14 +142,15 @@ loadStatesAndCities() {
 }
 
 goToPreviousPolicy() {
-  this.router.navigate(['/policy', this.policyId]);
+  const id = this.policyId;
+  this.router.navigate(['/policy', id]);
 
   // Alternative: Use history to go back
   // window.history.back();
 }
 
 updateAddress(){
-  if (this.address && this.address) {
+  if (this.isChange && this.address) {
     this.isLoading = true;
     this.addressService.updateAddress(this.address).subscribe({
       next: (response) => {

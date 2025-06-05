@@ -1,0 +1,41 @@
+<div class="registration-form">
+    <h2>Register</h2>
+  
+    <form #registrationForm="ngForm" (ngSubmit)="onSubmit()">
+      <div>
+        <label for="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="register.email"
+          #email="ngModel"
+          required
+          email
+          placeholder="Enter your email"
+        />
+        <div *ngIf="email.invalid && email.touched" class="error">
+          Please enter a valid email.
+        </div>
+      </div>
+  
+      <div>
+        <label for="policyNumber">Policy Number:</label>
+        <input
+          type="text"
+          id="policyNumber"
+          name="policyNumber"
+          [(ngModel)]="register.policyNumber"
+          #policyNumber="ngModel"
+          required
+          placeholder="Enter your policy number"
+        />
+        <div *ngIf="policyNumber.invalid && policyNumber.touched" class="error">
+          Policy number is required.
+        </div>
+      </div>
+  
+      <button type="submit" [disabled]="registrationForm.invalid">Register</button>
+    </form>
+  </div>
+  

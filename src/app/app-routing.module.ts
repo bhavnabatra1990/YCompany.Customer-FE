@@ -6,6 +6,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LogoutComponent } from './logout/logout.component';
 import { PolicydetailComponent } from './policydetail/policydetail.component';
 import { AddressComponent } from './address/address.component';
+import { RegisterComponent } from './register/register.component';
+import { OktaregisterComponent } from './oktaregister/oktaregister.component';
+import { LoadingComponent } from './loading/loading.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -14,6 +17,10 @@ export const routes: Routes = [
   { path: 'policy/:id', component: PolicydetailComponent },
   { path: 'address/:id/:policyId', component: AddressComponent },
   { path: 'dashboard', component: DashboardComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'loading', component: LoadingComponent },
+  { path: 'oktaregister/:email/:policy', component: OktaregisterComponent },
+
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 

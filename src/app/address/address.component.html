@@ -18,27 +18,27 @@
   
       <div>
         <label>City:</label>
-        <select [(ngModel)]="address.cityId" name="cityId" required>
+        <select [(ngModel)]="address.cityId" name="cityId" (change)="detectChanges()" required>
           <option *ngFor="let city of cities || []" [value]="city.id">{{ city.name }}</option>
         </select>
       </div>
   
       <div>
         <label>Street Address:</label>
-        <input type="text" [(ngModel)]="address.streetAddress" name="streetAddress" required />
+        <input type="text" [(ngModel)]="address.streetAddress" (change)="detectChanges()" name="streetAddress" required />
       </div>
   
       <div>
         <label>Landmark:</label>
-        <input type="text" [(ngModel)]="address.landMark" name="landMark" />
+        <input type="text" [(ngModel)]="address.landMark" (change)="detectChanges()" name="landMark" />
       </div>
   
       <div>
         <label>Postal Code:</label>
-        <input type="text" [(ngModel)]="address.postalCode" name="postalCode" required />
+        <input type="text" [(ngModel)]="address.postalCode" (change)="detectChanges()" name="postalCode" required />
       </div>
   
-      <button type="submit">Update Address</button>
+      <button type="submit" [disabled]="!isChange">Update Address</button>
   
       <!-- Add "Go to Previous Policy Page" button -->
       <button type="button" (click)="goToPreviousPolicy()">Go to Previous Policy Page</button>

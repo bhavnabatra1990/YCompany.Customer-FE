@@ -31,6 +31,17 @@ export class CallbackComponent implements OnInit {
           const token = await this.oktaAuth.getAccessToken();
           this.loginService.setAccessToken(token);
           this.loginService.setAuthenticated(true);
+          const claims = this.loginService.getuserClaims();
+          //get email from claims
+          if (!claims || !claims.RoleType) {
+            alert('No email found in user claims');
+            this.router.navigate(['/logout']);
+          }
+          if(claims.RoleType === 'Customer') {
+            this.router.navigate(['/dashboard']);
+          } else if (claims.RoleType === 'Agent') {
+            alert('This application is not available for now for Agents. Please contact adminstrator.');
+          }
         })
       )
       .subscribe();
@@ -39,7 +50,7 @@ export class CallbackComponent implements OnInit {
   async ngOnInit() {
     try {
       await this.oktaAuth.handleLoginRedirect();
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/loading']);
     } catch (error) {
       console.error('Error during login callback:', error);
     }

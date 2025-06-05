@@ -1,6 +1,9 @@
 <nav>
     <ul>
       <li *ngIf="!loginService.isAuthenticated">
+        <a routerLink="/register">Register</a>
+      </li>
+      <li *ngIf="!loginService.isAuthenticated">
         <a routerLink="/login">Login</a>
       </li>
       <li *ngIf="loginService.isAuthenticated">

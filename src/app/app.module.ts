@@ -8,7 +8,6 @@ import { OktaAuth } from '@okta/okta-auth-js';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { LoginComponent } from './login/login.component';
-//import { MatTabsModule } from '@angular/material/tabs';
 import { CallbackComponent } from './login/callback/callback.component';
 import { LoginService } from './services/login.service';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
@@ -22,10 +21,14 @@ import { AuthInterceptor } from './auth.interceptor';
 import { AddressComponent } from './address/address.component';
 import { FormsModule } from '@angular/forms';
 import { PolicydetailComponent } from './policydetail/policydetail.component';
+import { RegisterComponent } from './register/register.component';
+import { OktaregisterComponent } from './oktaregister/oktaregister.component';
+import { environment } from './environment';
+import { LoadingComponent } from './loading/loading.component';
 
 const oktaAuth = new OktaAuth({
-  issuer: 'https://dev-17889767.okta.com/oauth2/default', // Replace with your Okta domain
-  clientId: '0oanhjkxt3X2xoOPe5d7', // Replace with your Client ID
+  issuer: environment.issuer,
+  clientId: environment.clientId,
   redirectUri: window.location.origin + '/login/callback',
   scopes: ['openid', 'offline_access', 'profile'],
   postLogoutRedirectUri: window.location.origin
@@ -40,7 +43,10 @@ const oktaAuth = new OktaAuth({
     DashboardComponent,
     LogoutComponent,
     AddressComponent,
-    PolicydetailComponent
+    PolicydetailComponent,
+    RegisterComponent,
+    OktaregisterComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,

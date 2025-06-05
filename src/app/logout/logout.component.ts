@@ -16,6 +16,8 @@ export class LogoutComponent {
 
   public async logout(): Promise<void> {
     await this.oktaAuth.signOut();
+    localStorage.clear();
+    sessionStorage.clear();
   }
 
 }
