@@ -6,20 +6,14 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 
 Follow these steps to set up and run the project locally:
 
-### 1. Clone the Repository
-Clone the project repository to your local machine:
-```bash
-git clone <repository-url>
-```
-
-### 2. Install Dependencies
+### 1. Install Dependencies
 Navigate to the project directory and install the required dependencies:
 ```bash
 cd YCompany.Customer-FE
 npm install
 ```
 
-### 3. Configure Environment
+### 2. Configure Environment
 Update the `environment.ts` file with the appropriate values for Okta issuer and client ID:
 ```plaintext
 export const environment = {
@@ -29,20 +23,20 @@ export const environment = {
 };
 ```
 
-### 4. Start the Development Server
+### 3. Start the Development Server
 Run the following command to start the local development server:
 ```bash
 ng serve
 ```
 
-### 5. Access the Application
+### 4. Access the Application
 Once the server is running, open your browser and navigate to:
 ```
 http://localhost:4200/
 ```
 The application will automatically reload whenever you modify any of the source files.
 
-### 6. Additional Notes
+### 5. Additional Notes
 - Ensure you have Node.js and Angular CLI installed on your system.
 - For production builds, use `ng build --prod` to generate optimized output.
 
