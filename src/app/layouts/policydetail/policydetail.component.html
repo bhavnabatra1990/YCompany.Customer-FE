@@ -1,4 +1,4 @@
-<div class="policy-detail-container" *ngIf="!isLoading && policyDetail && loginService.isAuthenticated">
+<div class="policy-detail-container" *ngIf="policyDetail && loginService.isAuthenticated">
     <h2>Policy Details</h2>
     <div class="policy-info-grid">
       <div><strong>Policy Holder:</strong> {{ policyDetail.policyHolder }}</div>
@@ -13,6 +13,5 @@
     </div>
   </div>
   
-  <div *ngIf="isLoading" class="loading">Loading policy details...</div>
   <div *ngIf="error" class="error">{{ error }}</div>
   

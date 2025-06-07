@@ -7,6 +7,7 @@ import { PolicyService } from '../../services/policy.service';
 import { Policy } from '../../models/policies.model';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,7 +22,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   policies: Policy[] = [];
   userProfile: any = null;
   isAuthenticated = false;
-  isLoading: boolean = false;
   error:string | null = null;
 
   constructor(
@@ -29,7 +29,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     public userService: UserService,
     public policyService: PolicyService,
     private cdr: ChangeDetectorRef,
-    private router:Router
+    private router:Router,
+    private loadingService: LoadingService
   ) { }
 
   ngOnInit(): void {
@@ -45,11 +46,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   fetchUserProfile(): void {
-    this.isLoading = true;
+    this.loadingService.show();
     const claims = this.loginService.getuserClaims();
     //get email from claims
     if (!claims || !claims.preferred_username) {
-      this.isLoading = false;
+      this.loadingService.hide();
       alert('No email found in user claims');
       return;
     }
@@ -61,14 +62,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.userProfile = response.response;
           this.loginService.setUserId(this.userProfile.id,name); // Set user ID in login service
           this.fetchPolicies(); // Fetch policies after setting user ID
-          this.isLoading = false;
+          this.loadingService.hide();
           this.cdr.detectChanges(); // Move here so it happens after setting policies
         } else {
           this.error = response.statusMessage;
         }
       },
       error: (error) => {
-        this.isLoading = false;
+        this.loadingService.hide();
         this.error = 'Error fetching policies';
         console.error('Error fetching policies:', error);
       }
@@ -76,21 +77,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   fetchPolicies(): void {
-    this.isLoading = true;
+    this.loadingService.show();
     const userId = this.loginService.geUserId();
     if (userId) {
       this.policyService.getAllPolicies(userId).subscribe({
         next: (response) => {
           if (response.success) {
             this.policies = response.response;
-            this.isLoading = false;
+            this.loadingService.hide();
             this.cdr.detectChanges(); // Move here so it happens after setting policies
           } else {
             this.error = response.statusMessage;
           }
         },
         error: (error) => {
-          this.isLoading = false;
+          this.loadingService.hide();
           this.error = 'An error occurred while fetching policies';
         }
       });

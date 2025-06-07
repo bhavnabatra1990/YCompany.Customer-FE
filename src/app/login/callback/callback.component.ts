@@ -5,6 +5,7 @@ import { filter, switchMap, tap } from 'rxjs/operators';
 import { LoginService } from '../../services/login.service';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-callback',
@@ -18,7 +19,7 @@ export class CallbackComponent implements OnInit {
 
   constructor(
     private loginService: LoginService,
-    private userService: UserService,
+    private loadingService: LoadingService,
     private router: Router
   ) {
     // Listen to Okta auth state changes
@@ -35,11 +36,14 @@ export class CallbackComponent implements OnInit {
           //get email from claims
           if (!claims || !claims.RoleType) {
             alert('No email found in user claims');
+            this.loadingService.hide();
             this.router.navigate(['/logout']);
           }
           if(claims.RoleType === 'Customer') {
+            this.loadingService.hide();
             this.router.navigate(['/dashboard']);
           } else if (claims.RoleType === 'Agent') {
+            this.loadingService.hide();
             alert('This application is not available for now for Agents. Please contact adminstrator.');
           }
         })
@@ -49,6 +53,7 @@ export class CallbackComponent implements OnInit {
 
   async ngOnInit() {
     try {
+      this.loadingService.show();
       await this.oktaAuth.handleLoginRedirect();
       this.router.navigate(['/loading']);
     } catch (error) {

@@ -5,6 +5,7 @@ import { PolicyService } from '../../services/policy.service';
 import { AddressService } from '../../services/address.service';
 import { Address } from '../../models/address.model';
 import { DataService } from '../../services/data.service';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-address',
@@ -22,7 +23,6 @@ export class AddressComponent implements OnChanges, OnInit {
     postalCode: '',
     id: 0
   };
-  isLoading = true;
   error: string | null = null;
   addressId: number | undefined;
   countries: any[] = [];
@@ -41,13 +41,15 @@ export class AddressComponent implements OnChanges, OnInit {
   };
 
   constructor(private route: ActivatedRoute,private addressService: AddressService, 
-    private dataService: DataService, public loginService: LoginService, private router: Router, private cdr: ChangeDetectorRef) {}
+    private dataService: DataService, public loginService: LoginService, private router: Router,
+     private cdr: ChangeDetectorRef, private loadingService: LoadingService) {}
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
     const policyParam = this.route.snapshot.paramMap.get('policyId');
     this.isChange = false;
     this.cdr.detectChanges();
+    this.loadingService.show();
     if (idParam) {
     this.addressId = parseInt(idParam,10);
     }
@@ -59,6 +61,7 @@ export class AddressComponent implements OnChanges, OnInit {
       this.loadCountries();
       this.fetchAddressDetail();
     }
+    this.loadingService.hide();
   }
 
   loadCountries() {
@@ -68,6 +71,7 @@ export class AddressComponent implements OnChanges, OnInit {
   }
 
   onCountryChange() {
+    this.loadingService.show();
     this.address.stateId = undefined;
     this.address.cityId = undefined;
     this.states = [];
@@ -79,9 +83,11 @@ export class AddressComponent implements OnChanges, OnInit {
         this.states = data;
       });
     }
+    this.loadingService.hide();
   }
 
   onStateChange() {
+    this.loadingService.show();
     this.address.cityId = undefined;
     this.cities = [];
     this.detectChanges();
@@ -91,6 +97,7 @@ export class AddressComponent implements OnChanges, OnInit {
         this.cities = data;
       });
     }
+    this.loadingService.hide();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -116,12 +123,10 @@ export class AddressComponent implements OnChanges, OnInit {
         } else {
           this.error = response.statusMessage;
         }
-        this.isLoading = false;
       },
       error: (err) => {
         console.error('Address fetch error:', err);
         this.error = 'An error occurred while loading address details.';
-        this.isLoading = false;
       }
     });
   }
@@ -144,14 +149,11 @@ loadStatesAndCities() {
 goToPreviousPolicy() {
   const id = this.policyId;
   this.router.navigate(['/policy', id]);
-
-  // Alternative: Use history to go back
-  // window.history.back();
 }
 
 updateAddress(){
   if (this.isChange && this.address) {
-    this.isLoading = true;
+    this.loadingService.show();
     this.addressService.updateAddress(this.address).subscribe({
       next: (response) => {
         if (response.success) {
@@ -160,12 +162,12 @@ updateAddress(){
         } else {
           this.error = response.statusMessage;
         }
-        this.isLoading = false;
+        this.loadingService.hide();
       },
       error: (err) => {
         console.error('Address update error:', err);
         this.error = 'An error occurred while updating the address.';
-        this.isLoading = false;
+        this.loadingService.hide();
       }
     });
   } else {

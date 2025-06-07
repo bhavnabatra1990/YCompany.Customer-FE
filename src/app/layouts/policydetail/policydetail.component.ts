@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { PolicyService } from '../../services/policy.service';
 import { LoginService } from '../../services/login.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-policydetail',
@@ -11,12 +12,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class PolicydetailComponent implements OnChanges, OnInit {
   policyDetail: any = null;
-  isLoading = true;
   error: string | null = null;
   policyId: number | undefined;
 
   constructor(private route: ActivatedRoute,private policyService: PolicyService, public loginService: LoginService,
-    private router:Router) {}
+    private router:Router, private loadingService: LoadingService) {}
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -35,7 +35,7 @@ export class PolicydetailComponent implements OnChanges, OnInit {
   }
 
   fetchPolicyDetail(): void {
-    //const policyId = 1222337; // Replace with dynamic ID if needed
+    this.loadingService.show();
     const userId = this.loginService.geUserId();
     if(userId && this.policyId) {
     this.policyService.getPolicyDetail(this.policyId,userId).subscribe({
@@ -45,12 +45,12 @@ export class PolicydetailComponent implements OnChanges, OnInit {
         } else {
           this.error = response.statusMessage;
         }
-        this.isLoading = false;
+        this.loadingService.hide();
       },
       error: (err) => {
         console.error('Policy fetch error:', err);
         this.error = 'An error occurred while loading policy details.';
-        this.isLoading = false;
+        this.loadingService.hide();
       }
     });
   }

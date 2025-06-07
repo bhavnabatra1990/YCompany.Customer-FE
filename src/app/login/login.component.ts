@@ -16,27 +16,4 @@ export class LoginComponent {
   async login() {
     await this.oktaAuth.signInWithRedirect({});
   }
-
-  //public isAuthenticated$;
-
-  // constructor(private oktaStateService: OktaAuthStateService, private oktaAuth: OktaAuth) {
-  //   //  // Initialize the observable in the constructor
-  //   //  this.isAuthenticated$ = this.oktaStateService.authState$.pipe(
-  //   //   map((authState) => authState.isAuthenticated || false)
-  //   // );
-  //   // Function to initiate login
-  // async login() {
-  //   await this.oktaAuth.signInWithRedirect({
-  //     originalUri: '/dashboard', // Redirect to dashboard after login
-  //   });
-  // }
-  // }  
-
-  // public async signIn() : Promise<void> {
-  //   await this.oktaAuth.signInWithRedirect();
-  // }
-
-  // public async signOut(): Promise<void> {
-  //   await this.oktaAuth.signOut();
-  // }
 }
