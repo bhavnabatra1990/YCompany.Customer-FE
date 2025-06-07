@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { SignUpData } from '../models/signUpData.model';
-import { UserService } from '../services/user.service';
-import { Status } from '../enums/status';
+import { SignUpData } from '../../models/signUpData.model';
+import { UserService } from '../../services/user.service';
+import { Status } from '../../enums/status';
 import { Router } from '@angular/router';
 
 @Component({

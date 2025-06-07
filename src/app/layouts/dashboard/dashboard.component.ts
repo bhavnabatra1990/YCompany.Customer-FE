@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 
-import { LoginService } from '../services/login.service';
-import { UserService } from '../services/user.service';
-import { PolicyService } from '../services/policy.service';
-import { Policy } from '../models/policies.model';
+import { LoginService } from '../../services/login.service';
+import { UserService } from '../../services/user.service';
+import { PolicyService } from '../../services/policy.service';
+import { Policy } from '../../models/policies.model';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 

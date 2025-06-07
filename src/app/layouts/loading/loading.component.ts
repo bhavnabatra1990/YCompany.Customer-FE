@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-loading',
@@ -7,5 +8,10 @@ import { Component } from '@angular/core';
   styleUrl: './loading.component.css'
 })
 export class LoadingComponent {
+  isLoading$;
+  constructor(public loadingService: LoadingService) {
+    this.isLoading$ = this.loadingService.isLoading$;
+  }
 
+  
 }

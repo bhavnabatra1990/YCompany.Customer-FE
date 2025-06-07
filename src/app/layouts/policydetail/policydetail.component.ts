@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { PolicyService } from '../services/policy.service';
-import { LoginService } from '../services/login.service';
+import { PolicyService } from '../../services/policy.service';
+import { LoginService } from '../../services/login.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({

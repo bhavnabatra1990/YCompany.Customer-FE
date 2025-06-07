@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { OktaUser } from '../models/oktaUser.model';
+import { OktaUser } from '../../models/oktaUser.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserService } from '../services/user.service';
-import { SignUpData } from '../models/signUpData.model';
+import { UserService } from '../../services/user.service';
+import { SignUpData } from '../../models/signUpData.model';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-oktaregister',
@@ -21,7 +22,7 @@ export class OktaregisterComponent {
   errorMessage: string | null = null;
   policyNumber: string = '';
 
-  constructor(private route: ActivatedRoute, private router: Router, private userService: UserService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private loadingService: LoadingService) { }
 
 
   ngOnInit(): void {
@@ -37,12 +38,13 @@ export class OktaregisterComponent {
 
   registerUser() {
     // Reset state
-    this.isLoading = true;
+    this.loadingService.show(); // Show loading spinner
+    //this.isLoading = true;
     this.errorMessage = '';
 
     if(this.register.userType !== 'Customer') {
       this.errorMessage = 'For now, only customer user type is supported.';
-      this.isLoading = false;
+      this.loadingService.hide();
       return;
     }
 
@@ -55,14 +57,20 @@ export class OktaregisterComponent {
     } as SignUpData;
 
     this.userService.signUpCustomer(signUpData).subscribe({
-      next: () => {
-        this.resetForm();
-        alert('User registered successfully in Okta. Please Login again!');
-        this.isLoading = false;
-        this.router.navigate(['/login']);
+      next: (response) => {
+        this.resetForm()
+        if (response.success) {
+          alert('User registered successfully in Okta. Please Login again!');
+          this.loadingService.hide();
+          this.router.navigate(['/login']);
+        } else {
+          this.errorMessage = response.statusMessage;
+        }
+        this.loadingService.hide();
       },
-      error: (error) => {
-        this.errorMessage = `Failed to register user: ${error.error.errorSummary || error.message}`;
+      error: (err) => {
+        console.error('Okta register error:', err);
+        this.errorMessage = 'An error occurred while registering in Okta.';
         this.isLoading = false;
       }
     });

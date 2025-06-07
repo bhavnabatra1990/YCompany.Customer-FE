@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LoginService } from '../services/login.service';
-import { PolicyService } from '../services/policy.service';
-import { AddressService } from '../services/address.service';
-import { Address } from '../models/address.model';
-import { DataService } from '../services/data.service';
+import { LoginService } from '../../services/login.service';
+import { PolicyService } from '../../services/policy.service';
+import { AddressService } from '../../services/address.service';
+import { Address } from '../../models/address.model';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-address',
